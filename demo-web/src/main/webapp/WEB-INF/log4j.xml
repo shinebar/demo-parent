@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- 可以配置多个appender来对应不同的输出，如文件输出，sql输出，控制台输出，邮件输出等 -->
+    <!-- [控制台STDOUT] 不同的输出类型对应着不同的calss，如控制台输出class对应着 org.apache.log4j.ConsoleAppender -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">  <!-- name提供给logger或者root调用 -->
+        <param name="encoding" value="GBK" />  <!-- 保存字符集 -->
+        <param name="target" value="System.out" />  <!-- 输出到控制台 -->
+        <layout class="org.apache.log4j.PatternLayout"> <!-- loyout表示输出方式，可以多种，class值区分，PatternLayout表示自定义格式 -->
+            <param name="ConversionPattern" value="%d{ISO8601} logTimes %r [logFrom:%-40.40c{3} logType: %-5p logContent:%m]%n" />  <!-- 输出格式，后面解释 -->
+        </layout>
+        <!--filter过滤器设置输出的级别:ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+            所有下面输出的是debug到warn不会有error和fatal
+        -->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="debug" />
+            <param name="levelMax" value="warn" />
+            <param name="AcceptOnMatch" value="true" />  <!-- 答案：http://bbs.csdn.net/topics/350195913 -->
+        </filter>
+    </appender>
+
+    <!-- name指定的是包名，这样只操作此包下的log -->
+   <!-- <logger name="com.wjs" additivity="true">
+        <level value="INFO"></level>
+        <appender-ref ref="console" />
+    </logger>-->
+
+    <!-- Root Logger -->
+    <!-- 所有logger的父类，记录所有的日志。 -->
+   <root>
+        <level value="ALL"></level>
+        <appender-ref ref="console"/>
+    </root>
+
+</log4j:configuration>
